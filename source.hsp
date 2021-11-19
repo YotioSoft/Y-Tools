@@ -1,0 +1,242 @@
+#packopt hide 1
+*home
+	title"Y-Tools"
+	
+	#include "user32.as"
+
+	#define WM_NCLBUTTONDOWN $000000A1
+	#define HTCAPTION 2
+	
+	#include "user32.as"
+	#include "shell32.as"
+	
+	#define SHGFI_ICON $00000100
+	#define SHGFI_TYPENAME $00000400
+	;	追加のアイコン取得タイプ
+	#define SHGFI_LARGEICON	$00000000	; x32サイズ (デフォルト)
+	#define SHGFI_SMALLICON	$00000001	; x16サイズ
+	#define SHGFI_LINKOVERLAY $00008000	; ショートカットアイコン
+	#define SHGFI_SELECTED $0010000		; 選択状態アイコン
+
+	dim SHFILEINFO, 88
+	sdim filetype, 80
+
+	bgscr 0,400,83:color 210,210,210:boxf
+	objsize 80,22:pos 310,38:button "設定の変更",*setting
+	button"更新",*home
+	
+	gsel 0,2
+	onexit *exit
+	CreatePopupMenu:hMenu.0 = stat
+	
+	notesel buf
+	noteload "data/data.txt"
+
+	
+	buffer 1
+	picload"img/ie.png"
+	buffer 2
+	picload"img/memo.png"
+	buffer 3
+	picload"img/paint.png"
+	buffer 4
+	picload"img/calc.png"
+	buffer 5
+	picload"img/g.png"
+	buffer 6
+	picload"img/y.png"
+	buffer 7
+	picload"img/x.png"
+	gsel
+	
+	objsize 32,32
+	pos 0,0:objimage 1
+	button"",*ie
+	pos 37,0:objimage 2
+	button"",*memo
+	pos 74,0:objimage 3
+	button"",*paint
+	pos 111,0:objimage 4
+	button"",*calc
+	pos 308,0:objimage 5
+	button"",*google
+	pos 345,0:objimage 6
+	button"",*yahoo
+	objimage 7
+	objsize 16,16:pos 382,2:button"",*exit
+	objimage
+	
+	keyword=""
+	pos 153,5:objsize 150,20
+	input keyword
+	
+	color 128,128,128
+	color :line 0,35,400,35
+	
+	notesel data
+	noteload"data/data.txt"
+	sdim password, 256
+	noteget b1,1
+	noteget b2,2
+	noteget b3,3
+	noteget b4,4
+	noteget b5,5
+	noteget b6,6
+	
+	color 255,0,0:line 378,0,378,20:line 378,20,400,20
+	
+	color 255,255,255:line 49,35,49,83:line 97,35,97,83:line 147,35,147,83:line 197,35,197,83:line 247,35,247,83:line 297,35,297,83
+	objimage 0
+	objsize 24,20
+	color
+	if b1=0{
+		pos 8,50:mes"box1"
+		}else{
+			SHGetFileInfo b1, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 8, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+	
+			
+		}
+	if b2=0{
+		pos 58,50:mes"box2"
+		}else{
+			SHGetFileInfo b2, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 58, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+		}
+	if b3=0{
+		pos 106,50:mes"box3"
+		}else{
+			SHGetFileInfo b3, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 108, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+		}
+	if b4=0:{
+		pos 156,50:mes"box4"
+		}else{
+			SHGetFileInfo b4, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 158, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+		}
+	if b5=0{
+		pos 208,50:mes"box5"
+		}else{
+			SHGetFileInfo b5, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 208, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+		}
+	if b6=0{
+		pos 257,50:mes"box6"
+		}else{
+			SHGetFileInfo b6, 0, varptr(SHFILEINFO), $160, SHGFI_ICON | SHGFI_TYPENAME
+	
+			color
+		;	アイコンイメージの描画
+			DrawIcon hdc, 258, 40, SHFILEINFO.0
+			DestroyIcon SHFILEINFO.0
+			exist refstr
+			getstr filetype, SHFILEINFO, $110
+			redraw
+		}
+	
+	onclick goto*click
+	
+	stop
+	
+*ie
+	exec"iexplore",16
+	stop
+*memo
+	exec"notepad"
+	stop
+*paint
+	exec"mspaint"
+	stop
+*calc
+	exec"calc"
+	stop
+*google
+	exec "http://www.google.co.jp/search?q="+keyword+"",16
+	stop
+*yahoo
+	exec "http://search.yahoo.co.jp/search?ei=utf8&p="+keyword+"",16
+	stop
+*setting
+	exec"data/set.exe"
+	stop
+*exit
+	DestroyMenu hMenu.0
+	end
+*click
+	if wparam == 1 {// 左クリック
+	sendmsg hwnd,WM_NCLBUTTONDOWN,HTCAPTION,0
+	;マウスの位置
+	cx1=0,48:cy=35,83
+	cx2=50,98
+	cx3=100,148
+	cx4=150,198
+	cx5=200,248
+	cx6=250,298
+	mx = mousex :my = mousey// マウスの座標
+	if ((cx1.0 <= mx) && (mx <= cx1.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b1=0{stop}else{exec b1
+	stop
+	}
+	}
+	if ((cx2.0 <= mx) && (mx <= cx2.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b2=0{stop}else{exec b2
+	stop
+	}
+	}
+	if ((cx3.0 <= mx) && (mx <= cx3.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b3=0{stop}else{exec b3
+	stop
+	}
+	}
+	if ((cx4.0 <= mx) && (mx <= cx4.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b4=0{stop}else{exec b4
+	stop
+	}
+	}
+	if ((cx5.0 <= mx) && (mx <= cx5.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b5=0{stop}else{exec b5
+	stop
+	}
+	}
+	if ((cx6.0 <= mx) && (mx <= cx6.1)) && ((cy.0 <= my) && (my <= cy.1)) {
+	if b6=0{stop}else{exec b6
+	stop
+	}
+	}
+	}

@@ -1,0 +1,77 @@
+;設定アプリ
+*start
+	gsel IDW_Main, 2
+	title"Y-Tools_setting"
+	genzai=dirinfo(0)+"/data.txt"
+	screen 0,200,180
+	mes"どの項目を変更しますか？"
+	button"box1",*b1
+	button"box2",*b2
+	button"box3",*b3
+	button"box4",*b4
+	button"box5",*b5
+	button"box6",*b6
+	
+	notesel buf
+	noteload "data.txt"
+	sdim box, 256
+	noteget b1l,1
+	noteget b2l,2
+	noteget b3l,3
+	noteget b4l,4
+	noteget b5l,5
+	stop
+*b1
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,1,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
+*b2
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,2,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
+*b3
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,3,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
+*b4
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,4,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
+*b5
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,5,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
+*b6
+	dialog "exe",16,"実行ファイル"
+	if stat = 0 {
+		stop
+	}
+	noteadd refstr,6,1
+	notesave genzai
+	dialog"設定を反映するにはY-Toolsを更新してください"
+	stop
